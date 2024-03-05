@@ -8,6 +8,11 @@ const router = createRouter({
       name: "home",
       component: () => import("../components/products.vue"),
     },
+    {
+      path: '/update/:id',
+      name: 'update',
+      component: () => import('../components/update.vue')
+    } 
   ],
 });
 
