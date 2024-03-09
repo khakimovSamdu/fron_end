@@ -16,8 +16,8 @@
   <div class="w-[70%] m-auto my-5 flex flex-wrap">
     <div class="w-[15%] m-2 rounded-md h-auto py-5 shadow hover:shadow-md hover:cursor-pointer"
       v-for="list of   products  ">
-      <img :src="list.url" alt="" class="w-1/2 h-28 m-auto" />
-      <h1 class="pt-4 px-3 text-sm">{{ list.model }}</h1>
+      <img :src="list.img_url" alt="" class="w-1/2 h-28 m-auto" />
+      <!-- <h1 class="pt-4 px-3 text-sm">{{ list.RAM }}</h1> -->
       <h1 class="text-sm px-3 py-2 overflow-hidden line-clamp-2">
         {{ list.name }}
       </h1>
@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 import { resolveTypeElements } from "vue/compiler-sfc";
 import router from "@/router";
@@ -52,8 +52,13 @@ let products = ref([]);
 let menu = ref([]);
 
 
+onMounted(() => {
+  GetData();
+})
+
+
 let GetData = function () {
-  axios.get("https://mirjaxon.pythonanywhere.com/field/all/").then((resp) => {
+  axios.get("https://allamurod.pythonanywhere.com/smartphone/all/").then((resp) => {
 
     products.value = resp.data.data
 
@@ -62,8 +67,7 @@ let GetData = function () {
 
 GetData();
 
-
-axios.get("https://mirjaxon.pythonanywhere.com/field/models").then((resp) => {
+axios.get("https://allamurod.pythonanywhere.com/smartphone/brends").then((resp) => {
   menu.value = resp.data
 });
 
@@ -71,11 +75,11 @@ axios.get("https://mirjaxon.pythonanywhere.com/field/models").then((resp) => {
 function Sort(arg) {
 
   if (arg === 'all') {
-    axios.get("https://mirjaxon.pythonanywhere.com/field/all/").then((resp) => {
+    axios.get("https://allamurod.pythonanywhere.com/smartphone/all/").then((resp) => {
       products.value = resp.data.data
     });
   } else {
-    axios.get(`https://mirjaxon.pythonanywhere.com/field/models/${arg}`).then((resp) => {
+    axios.get(`https://allamurod.pythonanywhere.com/smartphone/${arg}/all/`).then((resp) => {
       products.value = resp.data
     });
 
@@ -88,15 +92,15 @@ function Delete(id, index) {
   products.value.splice(index, 1)
 
 
-  axios.get(`https://mirjaxon.pythonanywhere.com/field/delete/${id}`).then((resp) => {
+  axios.get(`https://allamurod.pythonanywhere.com/smartphone/delete/${id}/`).then((resp) => {
 
     products.value = resp.data.data
 
   });
+
   GetData();
 
 }
-
 
 
 
